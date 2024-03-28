@@ -12,7 +12,7 @@ client.on('message', async (msg) => {
     //let message = new Message(client, msg);
    //await message.reply(msg);
     const chatId = msg.chat.id;
-    client.sendMessage(chatId, 'Received your message');
+    client.sendMessage(chatId, msg);
 });
 
 app.listen(port, () => {
