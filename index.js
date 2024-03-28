@@ -34,12 +34,12 @@ client.on('callback_query', async (callbackQuery) => {
   try {
     if (!callbackQuery) return;
     let message = new Message(client, callbackQuery.message);
-    message.text = callbackQuery.data;
-    message.command = message.text.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
+    message.data = callbackQuery.data;
+    message.command = message.data.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
     let match = message.text.trim().split(/ +/).slice(1);
     if (message.isBot) return;
     await command(message, match);
-    if (message.text) {
+    if (message.data) {
       console.log("[TG BOT CALLBACK QUERY]");
       console.log(new Date());
       console.log(message.user.firstName);
