@@ -28,6 +28,10 @@ client.on('message', async (msg) => {
   }
 });
 
+client.on('callback_query', (callbackQuery) => {
+  console.log(callbackQuery);
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
