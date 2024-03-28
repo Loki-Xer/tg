@@ -16,6 +16,13 @@ client.on('message', async (msg) => {
     let message = new Message(client, msg);
     if (message.isBot) return;
       await command(message);
+    if (message.text) {
+      console.log("tg bot"),
+        console.log("[ MESSAGE ]"),
+        console.log(new Date()),
+        console.log(msg.pushName),
+        console.log(msg.text)
+    }
   } catch (error) {
     console.error('Error handling message:', error);
     process.exit(1); 
