@@ -1,7 +1,7 @@
-const { command } = require("../lib/");
+const { addCommand } = require("../lib/");
 
 module.exports = (client) => {
-    command(
+    addCommand(
         {
             pattern: "ping",
             fromMe: false,
