@@ -7,5 +7,8 @@ const client = new TelegramBot(TOKEN, { polling: true });
 
 client.on('message', (msg) => {
   const chatId = msg.chat.id;
-  client.sendMessage(chatId, msg);
+  console.log(msg);
+  console.log(chatId);
+  console.log("Bot Started!");
+  client.sendMessage(chatId, "hy");
 });
