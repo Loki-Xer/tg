@@ -4,7 +4,6 @@ const { TOKEN, PORT } = require("./env");
 const { Message } = require("./lib/");
 
 const app = express();
-const port = PORT || 3000;
 
 const client = new TelegramBot(TOKEN, { polling: true });
 
@@ -18,6 +17,6 @@ client.on('message', async (msg) => {
   }
 });
 
-app.listen(port, () => {
+app.listen(PORT, () => {
   console.log(`Server is running on port ${port}`);
 });
