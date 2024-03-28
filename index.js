@@ -2,8 +2,6 @@ const express = require('express');
 const TelegramBot = require('node-telegram-bot-api');
 const { TOKEN } = require("./env");
 const { Message, command } = require("./lib/");
-let prefix = "/";
-
 
 const app = express();
 const port = process.env.PORT || 3000;
