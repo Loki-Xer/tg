@@ -30,7 +30,7 @@ client.on('message', async (msg) => {
   }
 });
 
-client.on('callback_query', (callbackQuery) => {
+client.on('callback_query', async (callbackQuery) => {
   try {
     if (!msg) return;
     let message = new Message(client, msg);
@@ -51,6 +51,7 @@ client.on('callback_query', (callbackQuery) => {
     process.exit(1); 
   }
 });
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
