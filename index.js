@@ -7,50 +7,28 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const client = new TelegramBot(TOKEN, { polling: true });
-console.log("Starting bot...");
-const commands = [];
-
-
-const loadPlugins = async () => {
-    const fs = require("fs").promises;
-    const path = require("path");
-    const pluginDir = path.join(__dirname, "plugins");
-
-    try {
-        const files = await fs.readdir(pluginDir);
-        files.filter(file => file.endsWith(".js")).forEach(file => {
-            const plugin = require(path.join(pluginDir, file));
-            if (typeof plugin === 'function') {
-                plugin(client);
-                console.log(`Loaded plugin: ${file}`);
-            } else {
-                console.error(`Error loading plugin ${file}: Not a function`);
-            }
-        });
-    } catch (error) {
-        console.error("Error loading plugins:", error);
-    }
-};
-
+console.log("starting !!");
 
 client.on('message', async (msg) => {
-    try {
-        if (!msg || msg.isBot) return;
-        
-        const message = new Message(client, msg);
-        for (const command of commands) {
-            if (command.pattern && command.pattern.test(message.text)) {
-                await command.function(message);
-            }
-        }
-    } catch (error) {
-        console.error('Error handling message:', error);
-        process.exit(1); 
-    }
+  try {
+    if (!msg) return;
+    let message = new Message(client, msg);
+    if (message.isBot) return;
+    console.log(msg);
+      if (message.text === "ping") {
+          const start = new Date().getTime();
+          await message.reply("```Ping!```");
+          const end = new Date().getTime();
+          return await message.reply("*Pong!*\n ```" + (end - start) + "``` *ms*");
+      } else {
+          await message.reply(`wroking ${message.text}`);
+      }
+  } catch (error) {
+    console.error('Error handling message:', error);
+    process.exit(1); 
+  }
 });
 
-
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-    loadPlugins();
+  console.log(`Server is running on port ${port}`);
 });
