@@ -11,6 +11,7 @@ console.log("starting !!");
 
 client.on('message', async (msg) => {
   try {
+    if (!msg) return;
     let message = new Message(client, msg);
     if (message.isBot) return;
     console.log(msg);
