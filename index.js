@@ -17,8 +17,8 @@ client.on('message', async (msg) => {
     let message = new Message(client, msg);
     message.command = message.text.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
     message.match = message.text.trim().split(/ +/).slice(1);
-  //  if (message.isBot) return;
-    await command(message, message.command, message.match);
+    if (message.isBot) return;
+    await command(message);
     if (message.text) {
       console.log("[TG BOT MESSAGE]");
       console.log(new Date());
@@ -30,7 +30,7 @@ client.on('message', async (msg) => {
   }
 });
 
-/*client.on('callback_query', async (callbackQuery) => {
+client.on('callback_query', async (callbackQuery) => {
   try {
     if (!callbackQuery) return;
     let message = new Message(client, callbackQuery.message);
@@ -38,8 +38,8 @@ client.on('message', async (msg) => {
     message.command = message.action.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
     message.match = message.action.trim().split(/ +/).slice(1);
     if (!message.isBot) return;
-    await command(message, message.command, message.match);
-    if (message.data) {
+    await command(message);
+    if (message.action) {
       console.log("[TG BOT CALLBACK QUERY]");
       console.log(new Date());
       console.log(message.user.firstName);
@@ -48,7 +48,7 @@ client.on('message', async (msg) => {
   } catch (error) {
     console.error('Error handling callback query:', error);
   }
-});*/
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
