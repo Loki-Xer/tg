@@ -1,4 +1,4 @@
-const token = "7058438916:AAEP1vgzibhoohx2Jal8qDLn8XU-iUUrz0M";
+const token = "7119319746:AAHQ9GvwvB2m7PfRTbh5c3lmZHrTW6t3uD0";
 
 module.exports = {
   TOKEN: process.env.TOKEN || token
