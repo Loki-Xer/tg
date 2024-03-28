@@ -10,9 +10,9 @@ module.exports = (client) => {
         },
         async (message, match) => {
             const start = new Date().getTime();
-            await message.sendMessage(message.jid, "```Pinging...```");
+            await message.reply("```Pinging...```");
             const end = new Date().getTime();
-            return await message.sendMessage(message.jid,
+            return await message.reply(
                 "*Pong!*\n ```" + (end - start) + "``` *ms*"
             );
         }
