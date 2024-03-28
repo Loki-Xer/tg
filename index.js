@@ -14,7 +14,6 @@ client.on('message', async (msg) => {
     if (!msg) return;
     let message = new Message(client, msg);
     if (message.isBot) return;
-    console.log(msg);
       if (message.text === "ping") {
           const start = new Date().getTime();
           await message.reply("```Ping!```");
