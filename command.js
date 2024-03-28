@@ -1,6 +1,6 @@
-
 async function command(message) {
-  switch (message.text) {
+  const text = message.text.toLowerCase(); 
+  switch (text) {
         case "ping":
             const start = new Date().getTime();
             await message.reply("```Ping!```");
