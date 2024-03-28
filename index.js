@@ -7,13 +7,11 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const client = new TelegramBot(TOKEN, { polling: true });
-console.log("starting!!");
 
 client.on('message', async (msg) => {
   try {
     let message = new Message(client, msg);
-    console.log(message)
-    await message.reply(message.msg);
+    await message.reply();
   } catch (error) {
     console.error('Error handling message:', error);
     process.exit(1); 
