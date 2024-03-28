@@ -1,10 +1,10 @@
 const express = require('express');
 const TelegramBot = require('node-telegram-bot-api');
-const { TOKEN } = require("./env");
+const { TOKEN, PORT } = require("./env");
 const { Message } = require("./lib/");
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = PORT || 3000;
 
 const client = new TelegramBot(TOKEN, { polling: true });
 
