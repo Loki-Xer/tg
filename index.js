@@ -15,8 +15,6 @@ client.on('message', async (msg) => {
   try {
     if (!msg) return;
     let message = new Message(client, msg);
-    message.command = message.text.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
-    message.match = body.trim().split(/ +/).slice(1);
     if (message.isBot) return;
       await command(message);
     if (message.text) {
