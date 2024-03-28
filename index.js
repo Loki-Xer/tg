@@ -12,8 +12,9 @@ console.log("starting !!");
 client.on('message', async (msg) => {
   try {
     let message = new Message(client, msg);
+    if (message.isBot) return;
     console.log(msg);
-    await message.reply("wroking");
+    await message.reply(`wroking ${message.text}`);
   } catch (error) {
     console.error('Error handling message:', error);
     process.exit(1); 
