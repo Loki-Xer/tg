@@ -10,7 +10,7 @@ const client = new TelegramBot(TOKEN, { polling: true });
 
 client.on('message', async (msg) => {
     let message = new Message(client, msg);
-    await message.reply(message);
+    await message.reply("hy");
 });
 
 app.listen(port, () => {
