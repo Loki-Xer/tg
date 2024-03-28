@@ -11,7 +11,7 @@ const client = new TelegramBot(TOKEN, { polling: true });
 client.on('message', async (msg) => {
   try {
     let message = new Message(client, msg);
-    await message.reply(msg);
+    await message.reply(JSON.stringify(JSON.parse(msg)));
   } catch (error) {
     console.error('Error handling message:', error);
     process.exit(1);
