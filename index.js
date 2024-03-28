@@ -1,13 +1,11 @@
-const { Telegraf } = require('telegraf');
 const { TOKEN } = require("./environment")
+const TelegramBot = require('node-telegram-bot-api');
 
 
-const bot = new Telegraf(token);
+const client = new TelegramBot(TOKEN, { polling: true });
 
 
-bot.on('text', (ctx) => {
-  ctx.reply(ctx);
+client.on('message', (msg) => {
+  const chatId = msg.chat.id;
+  client.sendMessage(chatId, 'Hello! I am your Telegram bot.');
 });
-
-
-bot.launch();
