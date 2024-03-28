@@ -9,10 +9,8 @@ const port = process.env.PORT || 3000;
 const client = new TelegramBot(TOKEN, { polling: true });
 
 client.on('message', async (msg) => {
-    //let message = new Message(client, msg);
-   //await message.reply(msg);
-    const chatId = msg.chat.id;
-    client.sendMessage(chatId, msg);
+    let message = new Message(client, msg);
+    await message.reply(message);
 });
 
 app.listen(port, () => {
