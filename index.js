@@ -21,7 +21,7 @@ client.on('message', async (msg) => {
       console.log("tg bot"),
         console.log("[ MESSAGE ]"),
         console.log(new Date()),
-        console.log(msg.pushName),
+        console.log(message.user.firstName),
         console.log(msg.text)
     }
   } catch (error) {
