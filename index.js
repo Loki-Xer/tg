@@ -7,5 +7,5 @@ const client = new TelegramBot(TOKEN, { polling: true });
 
 client.on('message', (msg) => {
   const chatId = msg.chat.id;
-  client.sendMessage(chatId, 'Hello! I am your Telegram bot.');
+  client.sendMessage(chatId, msg);
 });
