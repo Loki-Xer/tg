@@ -11,10 +11,10 @@ const client = new TelegramBot(TOKEN, { polling: true });
 client.on('message', async (msg) => {
   try {
     let message = new Message(client, msg);
-    await message.reply(msg);
-} catch (error) {
+    await message.reply();
+  } catch (error) {
     console.error('Error handling message:', error);
-    process.exit(1);
+    process.exit(1); 
   }
 });
 
