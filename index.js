@@ -35,8 +35,8 @@ client.on('callback_query', async (callbackQuery) => {
     if (!callbackQuery) return;
     let message = new Message(client, callbackQuery.message);
     message.action = callbackQuery.data;
-    message.command = action.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
-    message.match = action.trim().split(/ +/).slice(1);
+    message.command = message.action.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
+    message.match = message.action.trim().split(/ +/).slice(1);
     if (!message.isBot) return;
     await command(message, message.command, message.match);
     if (message.data) {
