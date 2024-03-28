@@ -10,5 +10,5 @@ client.on('message', (msg) => {
   console.log(msg);
   console.log(chatId);
   console.log("Bot Started!");
-  client.sendMessage(chatId, "hy");
+  client.sendMessage(chatId, `hy ${msg.chat.first_name}`);
 });
