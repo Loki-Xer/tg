@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "node-telegram-bot-api": "^0.65.1",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "axios": "^0.27.2"
   },
   "author": "LOKI XER",
   "license": "MIT"
