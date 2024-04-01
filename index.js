@@ -18,7 +18,7 @@ client.on('message', async (msg) => {
     message.command = message.text.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
     message.match = msg.text.replace(message.command, '').trim();
     if (message.isBot) return;
-    await command(message);
+    await command(message, client);
     if (message.text) {
       console.log("[TG BOT MESSAGE]");
       console.log(new Date());
@@ -38,7 +38,7 @@ client.on('callback_query', async (callbackQuery) => {
     message.command = message.action.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
     message.match = msg.text.replace(message.command, '').trim();
     if (!message.isBot) return;
-    await command(message);
+    await command(message, client);
     if (message.action) {
       console.log("[TG BOT CALLBACK QUERY]");
       console.log(new Date());
