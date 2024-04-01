@@ -16,7 +16,7 @@ client.on('message', async (msg) => {
     if (!msg) return;
     let message = new Message(client, msg);
     message.command = message.text.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
-    message.match = msg.text.replace(message.command, '').trim();
+    message.match = message.text.replace(message.command, '').trim();
     if (message.isBot) return;
     await command(message);
     if (message.text) {
@@ -36,7 +36,7 @@ client.on('callback_query', async (callbackQuery) => {
     let message = new Message(client, callbackQuery.message);
     message.action = callbackQuery.data;
     message.command = message.action.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
-    message.match = msg.action.replace(message.command, '').trim();
+    message.match = message.action.replace(message.command, '').trim();
     if (!message.isBot) return;
     await command(message);
     if (message.action) {
