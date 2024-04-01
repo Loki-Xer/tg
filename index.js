@@ -32,7 +32,10 @@ client.on('message', async (msg) => {
        await command(message);
     }
     if (!message.admin) {
-       return message.reply(`*ask admin for sudo to use doraemon* \n\n *your id : ${message.jid}* \n *admin number: 917025673121*`);
+       return await client.sendMessage(msg.chat.id, "<b>ask admin for sudo to use doraemon</b> \n\n <i>your id : " + msg.chat.id + "</i> \n <b>admin ser <a href=\"https://wa.me/917025673121\">Loki-Xer</a></b>", { 
+        parse_mode: "HTML",
+        disable_web_page_preview: true
+      });
     }
     if (msg.text) {
       console.log("[TG BOT MESSAGE]");
