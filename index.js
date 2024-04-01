@@ -49,7 +49,7 @@ client.on('callback_query', async (callbackQuery) => {
   try {
     if (!callbackQuery) return;
     let message = new Message(client, callbackQuery.message, prefix);
-    message.action = callbackQuery.data;
+    message.action = prefix + callbackQuery.data;
     message.command = message.action.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
     message.match = message.action.toLowerCase().replace(message.command.toLowerCase(), '').trim();
     if (!message.isBot) return;
