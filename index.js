@@ -29,9 +29,10 @@ client.on('message', async (msg) => {
         return await message.send(`Error: ${error.message}`);
       }
     }
-    if (message.text.startsWith(prefix)) {
-        if (!message.admin) return message.reply(`*ask admin for sudo to use doraemon* \n\n *your id : ${message.jid}* \n *admin number: 917025673121*`)
-          await command(message);
+    if (message.text.startsWith(prefix) && message.admin) {
+       await command(message);
+    } else {
+       return message.reply(`*ask admin for sudo to use doraemon* \n\n *your id : ${message.jid}* \n *admin number: 917025673121*`);
     }
     if (msg.text) {
       console.log("[TG BOT MESSAGE]");
