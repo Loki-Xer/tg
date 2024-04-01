@@ -1,12 +1,11 @@
 const express = require('express');
 const TelegramBot = require('node-telegram-bot-api');
 const { Message, command } = require("./lib/");
-let env = require("./env");
-let prefix = (!env.HANDLERS || env.HANDLERS.trim() == 'null' || env.HANDLERS.trim() == 'false') ? '' : env.HANDLERS.trim();
+const env = require("./env");
+const prefix = (!env.HANDLERS || env.HANDLERS.trim() === 'null' || env.HANDLERS.trim() === 'false') ? '' : env.HANDLERS.trim();
 
 const app = express();
 const port = process.env.PORT || 3000;
-
 
 const client = new TelegramBot(env.TOKEN, { polling: true });
 console.log("Bot started!");
@@ -19,7 +18,7 @@ client.on('message', async (msg) => {
     message.match = message.text.toLowerCase().replace(message.command.toLowerCase(), '').trim();
     if (message.isBot) return;
     await command(message);
-    if (message.text) {
+    if (msg.text) {
       console.log("[TG BOT MESSAGE]");
       console.log(new Date());
       console.log(message.user.firstName);
@@ -39,7 +38,7 @@ client.on('callback_query', async (callbackQuery) => {
     message.match = message.action.toLowerCase().replace(message.command.toLowerCase(), '').trim();
     if (!message.isBot) return;
     await command(message);
-    if (message.action) {
+    if (callbackQuery.data) {
       console.log("[TG BOT CALLBACK QUERY]");
       console.log(new Date());
       console.log(message.user.firstName);
