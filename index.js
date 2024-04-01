@@ -48,8 +48,11 @@ client.on('message', async (msg) => {
 client.on('callback_query', async (callbackQuery) => {
   try {
     if (callbackQuery.data === 'button1_pressed') {
-     console.log(callbackQuery);
-    return client.answerCallbackQuery(callbackQuery.id, 'Text copied!');
+    client.answerCallbackQuery(callbackQuery.id, { text: 'Button 1 pressed!' });
+      console.log(callbackQuery);
+    } else if (callbackQuery.data === 'button2_pressed') {
+    client.answerCallbackQuery(callbackQuery.id, { text: 'Button 2 pressed!' });
+      console.log(callbackQuery)
     }
     if (!callbackQuery) return;
     let message = new Message(client, callbackQuery.message, prefix);
