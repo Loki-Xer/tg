@@ -20,11 +20,12 @@ client.on('message', async (msg) => {
     if (message.text.startsWith(">")) {
       let code = message.text.replace(">", "");
       try {
+        let m = message;
         let evaled = await eval(`(async () => { ${code} })()`);
         if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
         return await message.send(evaled);
       } catch (error) {
-        throw new Error(`Error executing code: ${error.message}`);
+        await message.send(`Error executing code: ${error.message}`);
       }
     }
     if (message.text.startsWith(prefix) && message.admin && message.command) {
