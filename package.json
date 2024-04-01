@@ -2,9 +2,9 @@
   "name": "tg-bot",
   "version": "1.0.0",
   "description": "Description of your project",
-  "main": "index.js",
+  "main": "index.js", 
   "scripts": {
-    "start": "pm2 start index.js --name tg-bot",
+    "start": "pm2 start",
     "stop": "pm2 stop tg-bot",
     "restart": "pm2 restart tg-bot"
   },
