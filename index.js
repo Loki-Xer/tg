@@ -13,7 +13,7 @@ console.log("Bot started!");
 client.on('message', async (msg) => {
   try {
     if (!msg) return;
-    let message = new Message(client, msg);
+    let message = new Message(client, msg, prefix);
     message.command = message.text.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
     message.match = message.text.toLowerCase().replace(message.command.toLowerCase(), '').trim();
     if (message.isBot) return;
@@ -28,7 +28,9 @@ client.on('message', async (msg) => {
         return await message.reply(`Error: ${error.message}`);
       }
     }
-    await command(message);
+    if (message.text.startsWith(prefix)) {
+        await command(message);
+    }
     if (msg.text) {
       console.log("[TG BOT MESSAGE]");
       console.log(new Date());
@@ -43,12 +45,14 @@ client.on('message', async (msg) => {
 client.on('callback_query', async (callbackQuery) => {
   try {
     if (!callbackQuery) return;
-    let message = new Message(client, callbackQuery.message);
+    let message = new Message(client, callbackQuery.message, prefix);
     message.action = callbackQuery.data;
     message.command = message.action.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
     message.match = message.action.toLowerCase().replace(message.command.toLowerCase(), '').trim();
     if (!message.isBot) return;
-    await command(message);
+    if (message.action.startsWith(prefix)) {
+        await command(message);
+    }
     if (callbackQuery.data) {
       console.log("[TG BOT CALLBACK QUERY]");
       console.log(new Date());
