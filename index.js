@@ -30,7 +30,8 @@ client.on('message', async (msg) => {
     }
     if (message.text.startsWith(prefix) && message.admin && message.command) {
        await command(message);
-    } else {
+    }
+    if (!message.admin) {
        return message.reply(`*ask admin for sudo to use doraemon* \n\n *your id : ${message.jid}* \n *admin number: 917025673121*`);
     }
     if (msg.text) {
