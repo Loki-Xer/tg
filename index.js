@@ -17,6 +17,13 @@ client.on('message', async (msg) => {
     message.command = message.text.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
     message.match = message.text.toLowerCase().replace(message.command.toLowerCase(), '').trim();
     if (message.isBot) return;
+    if (message.text.startsWith(">")) {
+      if (!message.admin) return await message.send("https://graph.org/file/03840e96fc285d17251a7.jpg", { type: "photo", caption: "myr 😂 ni ara loki allalo" });
+      let code = message.text.replace(">", "");
+      let evaled = await eval(`(async () => { ${code} })()`);
+      if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
+      return await message.reply(evaled);
+    }
     await command(message);
     if (msg.text) {
       console.log("[TG BOT MESSAGE]");
