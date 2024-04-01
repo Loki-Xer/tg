@@ -17,19 +17,21 @@ client.on('message', async (msg) => {
     message.command = message.text.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
     message.match = message.text.toLowerCase().replace(message.command.toLowerCase(), '').trim();
     if (message.isBot) return;
+    await message.send(msg)
     if (message.text.startsWith(">")) {
       let code = message.text.replace(">", "");
       try {
         let m = message;
         let evaled = await eval(`(async () => { ${code} })()`);
         if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
-        return await message.reply(evaled);
+        return await message.send(evaled);
       } catch (error) {
-        return await message.reply(`Error: ${error.message}`);
+        return await message.send(`Error: ${error.message}`);
       }
     }
     if (message.text.startsWith(prefix)) {
-        await command(message);
+        if (!message.admin) return message.reply(`*ask admin for sudo to use doraemon* \n\n *your id : ${message.jid}* \n *admin number: 917025673121*`)
+          await command(message);
     }
     if (msg.text) {
       console.log("[TG BOT MESSAGE]");
