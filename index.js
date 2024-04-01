@@ -47,8 +47,8 @@ client.on('message', async (msg) => {
 
 client.on('callback_query', async (callbackQuery) => {
   try {
-    if (query.data === 'copy_button_pressed') {
-    bot.answerCallbackQuery(query.id, 'Text copied!');
+    if (callbackQuery.data === 'copy_button_pressed') {
+    client.answerCallbackQuery(callbackQuery.id, 'Text copied!');
     }
     if (!callbackQuery) return;
     let message = new Message(client, callbackQuery.message, prefix);
