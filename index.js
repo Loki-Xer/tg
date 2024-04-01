@@ -17,7 +17,7 @@ client.on('message', async (msg) => {
     message.command = message.text.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
     message.match = message.text.toLowerCase().replace(message.command.toLowerCase(), '').trim();
     if (message.isBot) return;
-    await message.send(msg)
+   console.log(msg)
     if (message.text.startsWith(">")) {
       let code = message.text.replace(">", "");
       try {
