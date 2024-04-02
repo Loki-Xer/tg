@@ -5,7 +5,7 @@ const env = require("./env");
 const path = require("path"); 
 const prefix = (!env.HANDLERS || env.HANDLERS.trim() === 'null' || env.HANDLERS.trim() === 'false') ? '' : env.HANDLERS.trim();
 let fs = require("fs");
-const cmds = require("./lib/event");
+const cmds = require("./lib/events");
 
 const app = express();
 const port = process.env.PORT || 3000;
