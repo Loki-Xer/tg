@@ -2,6 +2,7 @@ const { Command } = require("../lib/");
 
 Command({
     on: "all",
+    pattern: "hy"
 }, async (message, match) => {
     if (message.text.startsWith(">")) {
         let m = message;
