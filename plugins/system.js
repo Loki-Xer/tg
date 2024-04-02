@@ -3,12 +3,12 @@ const { Command } = require("../lib/");
 Command({
     pattern: "ping",
     type: "user",
-    fromAdmin: false
+    fromAdmin: true
 }, async (message, match) => {
     const start = new Date().getTime();
-    const ping = await message.reply("*𝆺𝅥 running 𝆺𝅥*");
+    const ping = await message.reply("*Ping!*");
     const end = new Date().getTime();
-    return await message.reply("*☇ ꜱᴩᷨᴇͦᴇͭᴅ ☁ :* " + (end - start) + " *ᴍꜱ* ");
+    await message.send("*Pong!*\n" + (end - start) + " ms", { type: "edit", chat_id: message.jid, message_id: ping.message_id, parse_mode: "Markdown" });
 });
 
 
