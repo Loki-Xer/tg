@@ -20,6 +20,7 @@ client.on('message', async (msg) => {
          message.command = message.text.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
         message.match = message.text.toLowerCase().replace(message.command, '').replace(prefix, "").trim();
      } else if (message.text.startsWith(">")) {
+        let m = message;
         let code = message.text.replace(">", "");
         try {
           let evaled = await eval(`(async () => { ${code} })()`);
