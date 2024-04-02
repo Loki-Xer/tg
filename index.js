@@ -51,7 +51,7 @@ client.on('message', async (msg) => {
     if (!msg) return;
     const message = new Message(client, msg, prefix);
     if (message.isBot) return;
-    if (message.text.startsWith(prefix) && text[1] === " ") message.text = text.replace(/^(\.)(\s)(.+)/, '$1$3');
+    if (message.text.startsWith(prefix) && message.text[1] === " ") message.text = message.text.replace(/^(\.)(\s)(.+)/, '$1$3');
     if (message.admin) {
       if (message.text.startsWith(">")) {
         let m = message;
