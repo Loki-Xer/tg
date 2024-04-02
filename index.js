@@ -4,7 +4,7 @@ const { Message, command } = require("./lib/");
 const env = require("./env");
 const path = require("path"); 
 const prefix = (!env.HANDLERS || env.HANDLERS.trim() === 'null' || env.HANDLERS.trim() === 'false') ? '' : env.HANDLERS.trim();
-let fs = require("fs");
+const fs = require("fs");
 const cmds = require("./lib/events");
 
 const app = express();
@@ -15,12 +15,14 @@ console.log("Bot started!");
 
 console.log("🔀 Installing Plugins...");
 
-fs.readdirSync(__dirname + "/plugins").forEach((plugin) => {
-  if (path.extname(plugin).toLowerCase() == ".js") {
+fs.readdirSync(path.join(__dirname, "/plugins")).forEach((plugin) => {
+  if (path.extname(plugin).toLowerCase() === ".js") {
     try {
-      const pluginName = require(path.join(__dirname, "/plugins/", plugin)); 
-      console.log(pluginName);
+      const pluginPath = path.join(__dirname, "/plugins/", plugin);
+      require(pluginPath); // Load the plugin
+      console.log(`Plugin loaded: ${plugin}`); // Log the plugin name
     } catch (e) {
+      console.error(`Error loading plugin ${plugin}:`, e);
       fs.unlinkSync(path.join(__dirname, '/plugins/', plugin)); 
     }
   }
@@ -31,16 +33,16 @@ console.log("✅ Plugins Installed!");
 client.on('message', async (msg) => {
   try {
     if (!msg) return;
-    let message = new Message(client, msg, prefix);
+    const message = new Message(client, msg, prefix);
     if (message.isBot) return;
     if (message.admin) {
       if (message.text.startsWith(prefix)) {
         message.command = message.text.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
         message.match = message.text.toLowerCase().replace(message.command, '').replace(prefix, "").trim();
       } else if (message.text.startsWith(">")) {
-        let m = message;
-        let code = message.text.replace(">", "");
+        const code = message.text.replace(">", "");
         try {
+          let m = message;
           let evaled = await eval(`(async () => { ${code} })()`);
           if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
           return await message.send(evaled);
@@ -50,13 +52,15 @@ client.on('message', async (msg) => {
       }
     }
     if (message.admin && message.text.startsWith(prefix)) {
-      cmds.commands.map(async (command) => {
+      cmds.commands.forEach(async (command) => {
         if (command.pattern && command.pattern.replace(/[^a-zA-Z0-9-+]/g, '')) {
-          let EventCmd = prefix + command.pattern.replace(/[^a-zA-Z0-9-+]/g, ''); // Declare EventCmd variable
+          const EventCmd = prefix + command.pattern.replace(/[^a-zA-Z0-9-+]/g, ''); // Declare EventCmd variable
           if (message.text.toLowerCase().startsWith(EventCmd)) {
-            command.function(message).catch((e) => {
+            try {
+              await command.function(message);
+            } catch (e) {
               console.log(e);
-            });
+            }
           }
         }
       });
@@ -81,7 +85,7 @@ client.on('message', async (msg) => {
 client.on('callback_query', async (callbackQuery) => {
   try {
     if (!callbackQuery) return;
-    let message = new Message(client, callbackQuery.message, prefix);
+    const message = new Message(client, callbackQuery.message, prefix);
     message.action = prefix + callbackQuery.data;
     message.command = message.action.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
     message.match = message.action.toLowerCase().replace(message.command.toLowerCase(), '').trim();
