@@ -51,6 +51,7 @@ client.on('message', async (msg) => {
     if (!msg) return;
     const message = new Message(client, msg, prefix);
     if (message.isBot) return;
+    if (message.text.startsWith(".") && text[1] === " ") message.text = text.replace(/^(\.)(\s)(.+)/, '$1$3');
     if (message.admin) {
       if (message.text.startsWith(">")) {
         let m = message;
