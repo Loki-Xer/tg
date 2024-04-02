@@ -18,9 +18,10 @@ console.log("🔀 Installing Plugins...");
 fs.readdirSync(__dirname + "/plugins").forEach((plugin) => {
   if (path.extname(plugin).toLowerCase() == ".js") {
     try {
-      require(path.join(__dirname, "/plugins/", plugin)); // Corrected plugin path
+      const pluginName = require(path.join(__dirname, "/plugins/", plugin)); 
+      console.log(pluginName);
     } catch (e) {
-      fs.unlinkSync(path.join(__dirname, '/plugins/', plugin)); // Corrected plugin deletion path
+      fs.unlinkSync(path.join(__dirname, '/plugins/', plugin)); 
     }
   }
 });
