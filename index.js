@@ -38,10 +38,10 @@ client.on('message', async (msg) => {
     let commandExecuted = false;
      
     if (message.admin) {
-      cmds.commands.forEach(async (command) => {
+      cmds.commands.map(async (command) => {
         if (command.pattern && command.pattern.replace(/[^a-zA-Z0-9-+]/g, '')) {
-          const EventCmd = prefix + command.pattern.replace(/[^a-zA-Z0-9-+]/g, ''); // Declare EventCmd variable
-          if (message.text.toLowerCase().startsWith(EventCmd)) {
+         const EventCmd = prefix + command.pattern.replace(/[^a-zA-Z0-9-+]/g, '');
+          if (msg.body.toLowerCase().startsWith(EventCmd)) {
             try {
               message.command = EventCmd.replace(prefix, "").trim();
               message.match = message.text.toLowerCase().replace(message.command, '').replace(prefix, "").trim();
