@@ -39,6 +39,7 @@ client.on('message', async (msg) => {
      
     if (message.admin) {
       cmds.commands.forEach(async (command) => {
+       if (message.text.startsWith(prefix)) {
         if (command.pattern && command.pattern.replace(/[^a-zA-Z0-9-+]/g, '')) {
           const EventCmd = prefix + command.pattern.replace(/[^a-zA-Z0-9-+]/g, ''); // Declare EventCmd variable
           if (message.text.toLowerCase().startsWith(EventCmd)) {
@@ -52,6 +53,7 @@ client.on('message', async (msg) => {
             }
           }
         }
+       }
         if (!commandExecuted && command.on === "all" && message) {
           command.function(message, message.text, client);
         }
