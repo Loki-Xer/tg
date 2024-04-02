@@ -15,36 +15,36 @@ client.on('message', async (msg) => {
     if (!msg) return;
     let message = new Message(client, msg, prefix);
     if (message.isBot) return;
-    if (message.text.startsWith(prefix) && message.admin) {
-       message.command = message.text.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
-       message.match = message.text.toLowerCase().replace(message.command, '').replace(prefix, "").trim();
+    if (message.admin) {
+      if (message.text.startsWith(prefix)) {
+         message.command = message.text.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
+        message.match = message.text.toLowerCase().replace(message.command, '').replace(prefix, "").trim();
+     } else if (message.text.startsWith(">")) {
+        let code = message.text.replace(">", "");
+        try {
+          let evaled = await eval(`(async () => { ${code} })()`);
+          if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
+          return await message.send(evaled);
+        } catch (error) {
+          await message.send(`Error executing code: ${error.message}`);
+        }
+      } 
     }
-    if (message.text && message.text.startsWith(">")) {
-      let code = message.text.replace(">", "");
-      try {
-        let m = message;
-        let evaled = await eval(`(async () => { ${code} })()`);
-        if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
-        return await message.send(evaled);
-      } catch (error) {
-        await message.send(`Error executing code: ${error.message}`);
-      }
-    }
-    if (message.text && message.text.startsWith(prefix) && message.admin && message.command) {
+    if (message.admin && message.text.startsWith(prefix)) {
        await command(message);
     }
     if (!message.admin) {
-       return await client.sendMessage(msg.chat.id, "<b>ask admin for sudo to use doraemon</b> \n\n <i>your id : " + msg.chat.id + "</i> \n <b>admin ser <a href=\"https://wa.me/917025673121\">Loki-Xer</a></b>", { 
+       await client.sendMessage(msg.chat.id, "<b>ask admin for sudo to use doraemon</b> \n\n <i>your id : " + msg.chat.id + "</i> \n <b>admin ser <a href=\"https://wa.me/917025673121\">Loki-Xer</a></b>", { 
         parse_mode: "HTML",
         disable_web_page_preview: true
       });
     }
-    if (msg.text) {
-      console.log("[TG BOT MESSAGE]");
-      console.log(new Date());
-      console.log(message.user.firstName);
-      console.log(msg.text);
-    }
+    
+    console.log("[TG BOT MESSAGE]");
+    console.log(new Date());
+    console.log(message.user.firstName);
+    console.log(msg.text);
+    
   } catch (error) {
     console.error('Error handling message:', error);
   }
@@ -57,16 +57,15 @@ client.on('callback_query', async (callbackQuery) => {
     message.action = prefix + callbackQuery.data;
     message.command = message.action.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
     message.match = message.action.toLowerCase().replace(message.command.toLowerCase(), '').trim();
-    if (!message.isBot) return;
-    if (message.action.startsWith(prefix)) {
+    if (!message.isBot && message.action.startsWith(prefix)) {
         await command(message);
     }
-    if (callbackQuery.data) {
-      console.log("[TG BOT CALLBACK QUERY]");
-      console.log(new Date());
-      console.log(message.user.firstName);
-      console.log(callbackQuery.data);
-    }
+    
+    console.log("[TG BOT CALLBACK QUERY]");
+    console.log(new Date());
+    console.log(message.user.firstName);
+    console.log(callbackQuery.data);
+    
   } catch (error) {
     console.error('Error handling callback query:', error);
   }
