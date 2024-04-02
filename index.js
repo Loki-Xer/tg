@@ -1,6 +1,6 @@
 const express = require('express');
 const TelegramBot = require('node-telegram-bot-api');
-const { Message } = require("./lib/");
+const { Message } = require("./lib/message");
 const env = require("./env");
 const path = require("path"); 
 const prefix = (!env.HANDLERS || env.HANDLERS.trim() === 'null' || env.HANDLERS.trim() === 'false') ? '' : env.HANDLERS.trim();
@@ -32,8 +32,8 @@ console.log("✅ Plugins Installed!");
 
 client.on('message', async (msg) => {
   try {
-    if (!msg.text) return;
-    const message = new Message(client, msg.text, prefix);
+    if (!msg) return;
+    const message = new Message(client, msg, prefix);
     if (message.isBot) return;
     let commandExecuted = false;
      
@@ -87,7 +87,7 @@ client.on('message', async (msg) => {
 
 client.on('callback_query', async (callbackQuery) => {
   try {
-    const message = new Message(client, callbackQuery.message.text, prefix);
+    const message = new Message(client, callbackQuery.message, prefix);
     message.action = prefix + callbackQuery.data;
     for (const command of cmds.commands) {
         if (typeof command.pattern === 'string' && command.pattern.replace(/[^a-zA-Z0-9-+]/g, '')) {
