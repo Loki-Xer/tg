@@ -35,37 +35,31 @@ client.on('message', async (msg) => {
     if (!msg) return;
     const message = new Message(client, msg, prefix);
     if (message.isBot) return;
+    let commandExecuted = false;
+     
     if (message.admin) {
-      if (message.text.startsWith(prefix)) {
-        message.command = message.text.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
-        message.match = message.text.toLowerCase().replace(message.command, '').replace(prefix, "").trim();
-      } else if (message.text.startsWith(">")) {
-        const code = message.text.replace(">", "");
-        try {
-          let m = message;
-          let evaled = await eval(`(async () => { ${code} })()`);
-          if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
-          return await message.send(evaled);
-        } catch (error) {
-          await message.send(`Error executing code: ${error.message}`);
-        }
-      }
-    }
-    if (message.admin && message.text.startsWith(prefix)) {
       cmds.commands.forEach(async (command) => {
         if (command.pattern && command.pattern.replace(/[^a-zA-Z0-9-+]/g, '')) {
           const EventCmd = prefix + command.pattern.replace(/[^a-zA-Z0-9-+]/g, ''); // Declare EventCmd variable
           if (message.text.toLowerCase().startsWith(EventCmd)) {
             try {
-              await command.function(message);
+              message.command = EventCmd.replace(prefix, "").trim();
+              message.match = message.text.toLowerCase().replace(message.command, '').replace(prefix, "").trim();
+              await command.function(message, message.match, client);
+              commandExecuted = true;
             } catch (e) {
               console.log(e);
             }
           }
         }
+        if (!commandExecuted && command.on === "all" && message) {
+          command.function(message, message.text, client);
+        }
       });
     }
-    if (!message.admin) {
+   
+   
+    if (!message.admin && !commandExecuted) {
       await client.sendMessage(msg.chat.id, "<b>Ask admin for sudo to use Doraemon</b> \n\n <i>Your ID: " + msg.chat.id + "</i> \n <b>Admin: <a href=\"https://wa.me/917025673121\">Loki-Xer</a></b>", {
         parse_mode: "HTML",
         disable_web_page_preview: true
