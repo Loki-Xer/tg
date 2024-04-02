@@ -3,7 +3,7 @@ const { Command } = require("../lib/");
 Command({
 	pattern: "ping",
 	type: "user",
-	fromAdmin: true
+	fromAdmin: false
 }, async (message, match) => {
 	const start = new Date().getTime();
 	const ping = await message.reply("*𝆺𝅥 running 𝆺𝅥*");
