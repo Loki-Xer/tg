@@ -1,6 +1,6 @@
 const express = require('express');
 const TelegramBot = require('node-telegram-bot-api');
-const { Message, command } = require("./lib/");
+const { Message } = require("./lib/");
 const env = require("./env");
 const path = require("path"); 
 const prefix = (!env.HANDLERS || env.HANDLERS.trim() === 'null' || env.HANDLERS.trim() === 'false') ? '' : env.HANDLERS.trim();
@@ -19,10 +19,10 @@ fs.readdirSync(path.join(__dirname, "/plugins")).forEach((plugin) => {
   if (path.extname(plugin).toLowerCase() === ".js") {
     try {
       const pluginPath = path.join(__dirname, "/plugins/", plugin);
-      require(pluginPath); // Load the plugin
-      console.log(`Plugin loaded: ${plugin}`); // Log the plugin name
+      require(pluginPath); 
+      console.log(`Folder loaded: ${plugin}`); 
     } catch (e) {
-      console.error(`Error loading plugin ${plugin}:`, e);
+      console.error(`Error in loading folder ${plugin}:`, e);
       fs.unlinkSync(path.join(__dirname, '/plugins/', plugin)); 
     }
   }
@@ -44,29 +44,30 @@ client.on('message', async (msg) => {
         try {
             let evaled = await eval(code);
             if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
-            return await message.send(evaled);
+            return await client.sendMessage(msg.chat.id, evaled);
         } catch (error) {
-            return await message.send(`${error.message}`);
+            return await client.sendMessage(msg.chat.id, `${error.message}`);
         }
       }
     }
-      cmds.commands.forEach(async (command) => {
-        if (typeof command.pattern === 'string' && command.pattern.replace(/[^a-zA-Z0-9-+]/g, '')) {
-          const EventCmd = prefix + command.pattern.replace(/[^a-zA-Z0-9-+]/g, ''); // Declare EventCmd variable
-          if (message.text.toLowerCase().startsWith(EventCmd)) {
-            try {
-              message.command = EventCmd.replace(prefix, "").trim();
-              message.match = message.text.toLowerCase().replace(message.command, '').replace(prefix, "").trim();
-              await command.function(message, message.match, client);
-              commandExecuted = true;
-            } catch (e) {
-              console.log(e);
-            }
+
+    for (const command of cmds.commands) {
+      if (typeof command.pattern === 'string' && command.pattern.replace(/[^a-zA-Z0-9-+]/g, '')) {
+        const EventCmd = prefix + command.pattern.replace(/[^a-zA-Z0-9-+]/g, ''); // Declare EventCmd variable
+        if (message.text.toLowerCase().startsWith(EventCmd)) {
+          try {
+            message.command = EventCmd.replace(prefix, "").trim();
+            message.match = message.text.toLowerCase().replace(message.command, '').replace(prefix, "").trim();
+            await command.function(message, message.match, client);
+            commandExecuted = true;
+          } catch (e) {
+            console.log(e);
           }
         }
-      });
+      }
+    }
    
-    if (!message.admin && !commandExecuted) {
+    if (!message.admin && !commandExecuted && msg.text === "/start") {
       await client.sendMessage(msg.chat.id, "<b>Ask admin for sudo to use Doraemon</b> \n\n <i>Your ID: " + msg.chat.id + "</i> \n <b>Admin: <a href=\"https://wa.me/917025673121\">Loki-Xer</a></b>", {
         parse_mode: "HTML",
         disable_web_page_preview: true
@@ -88,7 +89,7 @@ client.on('callback_query', async (callbackQuery) => {
     if (!callbackQuery) return;
     const message = new Message(client, callbackQuery.message, prefix);
     message.action = prefix + callbackQuery.data;
-    cmds.commands.forEach(async (command) => {
+    for (const command of cmds.commands) {
         if (typeof command.pattern === 'string' && command.pattern.replace(/[^a-zA-Z0-9-+]/g, '')) {
           const EventCmd = prefix + command.pattern.replace(/[^a-zA-Z0-9-+]/g, ''); 
           if (message.action.toLowerCase().startsWith(EventCmd)) {
@@ -101,7 +102,7 @@ client.on('callback_query', async (callbackQuery) => {
             }
           }
         }
-      });
+      }
     
     console.log("[TG BOT CALLBACK QUERY]");
     console.log(new Date());
