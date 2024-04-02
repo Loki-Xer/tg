@@ -1,6 +1,6 @@
 const express = require('express');
 const TelegramBot = require('node-telegram-bot-api');
-const { Message } = require("./lib/Message");
+const { Message } = require("./lib/");
 const env = require("./env");
 const path = require("path"); 
 const prefix = (!env.HANDLERS || env.HANDLERS.trim() === 'null' || env.HANDLERS.trim() === 'false') ? '' : env.HANDLERS.trim();
