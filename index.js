@@ -30,17 +30,28 @@ fs.readdirSync(path.join(__dirname, "/plugins")).forEach((plugin) => {
 
 console.log("✅ Plugins Installed!");
 
-client.on('message', async (msg) => {
+
+client.onText(/\/start (.+)/, async (msg, match) => {
   try {
-    if (!msg) return;
     const message = new Message(client, msg, prefix);
-    if (message.isBot) return;
     if (!message.admin) {
       await message.send("<b>Ask admin for sudo to use Doraemon</b> \n\n <i>Your ID: " + msg.chat.id + "</i> \n <b>Admin: <a href=\"https://wa.me/917025673121\">Loki-Xer</a></b>", {
         parse_mode: "HTML",
         disable_web_page_preview: true
       });
-    } else if (message.admin) {
+    }
+  } catch (error) {
+    console.error("An error occurred:", error);
+  }
+});
+
+
+client.on('message', async (msg) => {
+  try {
+    if (!msg) return;
+    const message = new Message(client, msg, prefix);
+    if (message.isBot) return;
+    if (message.admin) {
       if (message.text.startsWith(">")) {
         let m = message;
         const code = message.text.slice(1).trim();
