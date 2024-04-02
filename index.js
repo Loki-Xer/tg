@@ -19,10 +19,10 @@ fs.readdirSync(path.join(__dirname, "/plugins")).forEach((plugin) => {
   if (path.extname(plugin).toLowerCase() === ".js") {
     try {
       const pluginPath = path.join(__dirname, "/plugins/", plugin);
-      require(pluginPath); // Load the plugin
-      console.log(`Plugin loaded: ${plugin}`); // Log the plugin name
+      require(pluginPath);
+      console.log(`Folder loaded: ${plugin}`); 
     } catch (e) {
-      console.error(`Error loading plugin ${plugin}:`, e);
+      console.error(`Error in loading folder ${plugin}:`, e);
       fs.unlinkSync(path.join(__dirname, '/plugins/', plugin)); 
     }
   }
@@ -33,39 +33,31 @@ console.log("✅ Plugins Installed!");
 client.on('message', async (msg) => {
   try {
     if (!msg) return;
-    const message = new Message(client, msg, prefix);
-    if (message.isBot) return;
-    if (message.admin) {
-      if (message.text.startsWith(prefix)) {
-        message.command = message.text.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
-        message.match = message.text.toLowerCase().replace(message.command, '').replace(prefix, "").trim();
-      } else if (message.text.startsWith(">")) {
-        const code = message.text.replace(">", "");
-        try {
-          let m = message;
-          let evaled = await eval(`(async () => { ${code} })()`);
-          if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
-          return await message.send(evaled);
-        } catch (error) {
-          await message.send(`Error executing code: ${error.message}`);
-        }
-      }
-    }
+    let commandExecuted = false;
     if (message.admin && message.text.startsWith(prefix)) {
-      cmds.commands.forEach(async (command) => {
+      message.command = message.text.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
+      message.match = message.text.toLowerCase().replace(message.command, '').replace(prefix, "").trim();
+      for (const command of cmds.commands) {
         if (command.pattern && command.pattern.replace(/[^a-zA-Z0-9-+]/g, '')) {
-          const EventCmd = prefix + command.pattern.replace(/[^a-zA-Z0-9-+]/g, ''); // Declare EventCmd variable
+          const EventCmd = prefix + command.pattern.replace(/[^a-zA-Z0-9-+]/g, '');
           if (message.text.toLowerCase().startsWith(EventCmd)) {
             try {
-              await command.function(message);
+              commandExecuted = true;
+              await command.function(message, message.match, client);
+              break;
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
           }
         }
-      });
+      }
+
+      if (!commandExecuted && command.on === "all" && msg) {
+        command.function(message, message.body, client);
+      }
     }
-    if (!message.admin) {
+
+    if (!commandExecuted && !message.admin) {
       await client.sendMessage(msg.chat.id, "<b>Ask admin for sudo to use Doraemon</b> \n\n <i>Your ID: " + msg.chat.id + "</i> \n <b>Admin: <a href=\"https://wa.me/917025673121\">Loki-Xer</a></b>", {
         parse_mode: "HTML",
         disable_web_page_preview: true
