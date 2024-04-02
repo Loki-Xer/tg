@@ -27,7 +27,7 @@ Command({
 Command({
      pattern: "jid",
      type: "user",
-     fromAdmin: false
+     fromAdmin: true
 }, async (message, match) => {
      await message.reply(message.jid.toString());
 });
