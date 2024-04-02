@@ -1,6 +1,6 @@
 const express = require('express');
 const TelegramBot = require('node-telegram-bot-api');
-const { Message } = require("./lib/");
+const { Message } = require("./lib/Message");
 const env = require("./env");
 const path = require("path"); 
 const prefix = (!env.HANDLERS || env.HANDLERS.trim() === 'null' || env.HANDLERS.trim() === 'false') ? '' : env.HANDLERS.trim();
@@ -32,8 +32,8 @@ console.log("✅ Plugins Installed!");
 
 client.on('message', async (msg) => {
   try {
-    if (!msg) return;
-    const message = new Message(client, msg, prefix);
+    if (!msg.text) return;
+    const message = new Message(client, msg.text, prefix);
     if (message.isBot) return;
     let commandExecuted = false;
      
@@ -44,16 +44,17 @@ client.on('message', async (msg) => {
         try {
             let evaled = await eval(code);
             if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
-            return await client.sendMessage(msg.chat.id, evaled);
+            return await message.sendMessage(evaled);
         } catch (error) {
-            return await client.sendMessage(msg.chat.id, `${error.message}`);
+            return await message.sendMessage(`${error.message}`);
         }
       }
     }
 
     for (const command of cmds.commands) {
       if (typeof command.pattern === 'string' && command.pattern.replace(/[^a-zA-Z0-9-+]/g, '')) {
-        const EventCmd = prefix + command.pattern.replace(/[^a-zA-Z0-9-+]/g, ''); // Declare EventCmd variable
+       if (command.fromAdmin && !message.admin) return;
+        const EventCmd = prefix + command.pattern.replace(/[^a-zA-Z0-9-+]/g, ''); 
         if (message.text.toLowerCase().startsWith(EventCmd)) {
           try {
             message.command = EventCmd.replace(prefix, "").trim();
@@ -68,7 +69,7 @@ client.on('message', async (msg) => {
     }
    
     if (!message.admin && !commandExecuted && msg.text === "/start") {
-      await client.sendMessage(msg.chat.id, "<b>Ask admin for sudo to use Doraemon</b> \n\n <i>Your ID: " + msg.chat.id + "</i> \n <b>Admin: <a href=\"https://wa.me/917025673121\">Loki-Xer</a></b>", {
+      await message.sendMessage("<b>Ask admin for sudo to use Doraemon</b> \n\n <i>Your ID: " + msg.chat.id + "</i> \n <b>Admin: <a href=\"https://wa.me/917025673121\">Loki-Xer</a></b>", {
         parse_mode: "HTML",
         disable_web_page_preview: true
       });
@@ -86,11 +87,11 @@ client.on('message', async (msg) => {
 
 client.on('callback_query', async (callbackQuery) => {
   try {
-    if (!callbackQuery) return;
-    const message = new Message(client, callbackQuery.message, prefix);
+    const message = new Message(client, callbackQuery.message.text, prefix);
     message.action = prefix + callbackQuery.data;
     for (const command of cmds.commands) {
         if (typeof command.pattern === 'string' && command.pattern.replace(/[^a-zA-Z0-9-+]/g, '')) {
+          if (command.fromAdmin && !message.admin) return;
           const EventCmd = prefix + command.pattern.replace(/[^a-zA-Z0-9-+]/g, ''); 
           if (message.action.toLowerCase().startsWith(EventCmd)) {
             try {
