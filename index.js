@@ -35,7 +35,7 @@ client.on('message', async (msg) => {
     if (!msg) return;
     const message = new Message(client, msg, prefix);
     if (message.isBot) return;
-    
+    let commandExecuted = false;
      
     if (message.admin) {
       if (message.text.startsWith(">")) {
@@ -88,12 +88,21 @@ client.on('callback_query', async (callbackQuery) => {
     if (!callbackQuery) return;
     const message = new Message(client, callbackQuery.message, prefix);
     message.action = prefix + callbackQuery.data;
-    message.command = message.action.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
-    message.match = message.action.toLowerCase().replace(message.command.toLowerCase(), '').trim();
-    if (message.action.startsWith(prefix)) {
-      await command(message);
-    }
-
+    cmds.commands.forEach(async (command) => {
+        if (typeof command.pattern === 'string' && command.pattern.replace(/[^a-zA-Z0-9-+]/g, '')) {
+          const EventCmd = prefix + command.pattern.replace(/[^a-zA-Z0-9-+]/g, ''); 
+          if (message.action.toLowerCase().startsWith(EventCmd)) {
+            try {
+              message.command = EventCmd.replace(prefix, "").trim();
+              message.match = message.action.toLowerCase().replace(message.command, '').replace(prefix, "").trim();
+              await command.function(message, message.match, client);
+            } catch (e) {
+              console.log(e);
+            }
+          }
+        }
+      });
+    
     console.log("[TG BOT CALLBACK QUERY]");
     console.log(new Date());
     console.log(message.user.firstName);
