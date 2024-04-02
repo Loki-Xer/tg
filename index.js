@@ -32,7 +32,7 @@ client.on('message', async (msg) => {
       } 
     }
     if (message.admin && message.text.startsWith(prefix)) {
-       await command(message);
+       //await command(message);
     }
     if (!message.admin) {
        await client.sendMessage(msg.chat.id, "<b>ask admin for sudo to use doraemon</b> \n\n <i>your id : " + msg.chat.id + "</i> \n <b>admin ser <a href=\"https://wa.me/917025673121\">Loki-Xer</a></b>", { 
