@@ -33,6 +33,7 @@ console.log("✅ Plugins Installed!");
 client.on('message', async (msg) => {
   try {
     if (!msg) return;
+    const message = new Message(client, msg, prefix);
     let commandExecuted = false;
     if (message.admin && message.text.startsWith(prefix)) {
       message.command = message.text.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
