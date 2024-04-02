@@ -35,9 +35,21 @@ client.on('message', async (msg) => {
     if (!msg) return;
     const message = new Message(client, msg, prefix);
     if (message.isBot) return;
-    let commandExecuted = false;
+    
      
     if (message.admin) {
+      if (message.text.startsWith(">")) {
+        let m = message;
+        const code = message.text.slice(1).trim();
+        try {
+            let evaled = await eval(code);
+            if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
+            return await message.send(evaled);
+        } catch (error) {
+            return await message.send(`${error.message}`);
+        }
+      }
+    }
       cmds.commands.forEach(async (command) => {
         if (typeof command.pattern === 'string' && command.pattern.replace(/[^a-zA-Z0-9-+]/g, '')) {
           const EventCmd = prefix + command.pattern.replace(/[^a-zA-Z0-9-+]/g, ''); // Declare EventCmd variable
@@ -52,11 +64,7 @@ client.on('message', async (msg) => {
             }
           }
         }
-        if (!commandExecuted && command.on === "all" && message) {
-          command.function(message, message.text, client);
-        }
       });
-    }
    
     if (!message.admin && !commandExecuted) {
       await client.sendMessage(msg.chat.id, "<b>Ask admin for sudo to use Doraemon</b> \n\n <i>Your ID: " + msg.chat.id + "</i> \n <b>Admin: <a href=\"https://wa.me/917025673121\">Loki-Xer</a></b>", {
