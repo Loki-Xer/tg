@@ -44,9 +44,9 @@ client.on('message', async (msg) => {
         try {
             let evaled = await eval(code);
             if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
-            return await message.sendMessage(evaled);
+            return await message.send(evaled);
         } catch (error) {
-            return await message.sendMessage(`${error.message}`);
+            return await message.send(`${error.message}`);
         }
       }
     }
@@ -69,7 +69,7 @@ client.on('message', async (msg) => {
     }
    
     if (!message.admin && !commandExecuted && msg.text === "/start") {
-      await message.sendMessage("<b>Ask admin for sudo to use Doraemon</b> \n\n <i>Your ID: " + msg.chat.id + "</i> \n <b>Admin: <a href=\"https://wa.me/917025673121\">Loki-Xer</a></b>", {
+      await message.send("<b>Ask admin for sudo to use Doraemon</b> \n\n <i>Your ID: " + msg.chat.id + "</i> \n <b>Admin: <a href=\"https://wa.me/917025673121\">Loki-Xer</a></b>", {
         parse_mode: "HTML",
         disable_web_page_preview: true
       });
