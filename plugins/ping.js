@@ -1,6 +1,6 @@
-const { addCommand } = require("../lib/");
+const { Command } = require("../lib/");
 
-addCommand({
+Command({
 	pattern: "ping",
 	type: "user",
 }, async (message, match) => {
