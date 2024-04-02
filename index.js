@@ -19,7 +19,7 @@ client.on('message', async (msg) => {
        message.command = message.text.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
        message.match = message.text.toLowerCase().replace(message.command, '').replace(prefix, "").trim();
     }
-    if (message.text.startsWith(">")) {
+    if (message.text && message.text.startsWith(">")) {
       let code = message.text.replace(">", "");
       try {
         let m = message;
@@ -30,7 +30,7 @@ client.on('message', async (msg) => {
         await message.send(`Error executing code: ${error.message}`);
       }
     }
-    if (message.text.startsWith(prefix) && message.admin && message.command) {
+    if (message.text && message.text.startsWith(prefix) && message.admin && message.command) {
        await command(message);
     }
     if (!message.admin) {
