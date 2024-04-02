@@ -1,24 +1,21 @@
 {
-  "name": "tg-bot",
-  "version": "1.0.0",
-  "description": "Description of your project",
-  "main": "index.js", 
-  "scripts": {
-    "start": "pm2 start index.js --name tg-bot",
-    "stop": "pm2 stop tg-bot",
-    "restart": "pm2 restart tg-bot"
-  },
-  "dependencies": {
-    "node-telegram-bot-api": "^0.65.1",
-    "express": "^4.17.1",
-    "axios": "^0.27.2",
-    "file-type": "^16.5.3",
-    "pm2": "^5.1.2"
-  },
-  "author": "LOKI XER",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Loki-Xer/tg.git"
-  }
+    "name": "tg-bot",
+    "version": "0.7.6",
+    "description": "A simple telegram bot made by Loki-Xer",
+    "main": "index.js",
+    "scripts": {
+        "start": "pm2 start . --attach --name tg-bot",
+        "stop": "pm2 stop tg-bot"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Loki-Xer/tg.git"
+    },
+    "dependencies": {
+        "node-telegram-bot-api": "^0.65.1",
+        "express": "^4.17.1",
+        "axios": "^0.27.2",
+        "file-type": "^16.5.3",
+        "pm2": "^5.1.2"
+    }
 }
