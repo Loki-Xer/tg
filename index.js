@@ -58,7 +58,7 @@ client.on('callback_query', async (callbackQuery) => {
     message.action = prefix + callbackQuery.data;
     message.command = message.action.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
     message.match = message.action.toLowerCase().replace(message.command.toLowerCase(), '').trim();
-    if (!message.isBot && message.action.startsWith(prefix)) {
+    if (message.action.startsWith(prefix)) {
         await command(message);
     }
     
