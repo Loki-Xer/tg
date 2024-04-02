@@ -52,8 +52,8 @@ client.on('message', async (msg) => {
       cmds.commands.map(async (command) => {
         if (command.pattern && command.pattern.replace(/[^a-zA-Z0-9-+]/g, '')) {
           let EventCmd = prefix + command.pattern.replace(/[^a-zA-Z0-9-+]/g, ''); // Declare EventCmd variable
-          if (msg.text.toLowerCase().startsWith(EventCmd)) {
-            command.function(msg, msg.text, msg, client).catch((e) => {
+          if (message.text.toLowerCase().startsWith(EventCmd)) {
+            command.function(message).catch((e) => {
               console.log(e);
             });
           }
