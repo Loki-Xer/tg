@@ -6,6 +6,8 @@ const path = require("path");
 const prefix = (!env.HANDLERS || env.HANDLERS.trim() === 'null' || env.HANDLERS.trim() === 'false') ? '' : env.HANDLERS.trim();
 const fs = require("fs");
 const cmds = require("./lib/events");
+let regex = new RegExp("^(" + prefix.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + ")(\\s)(.+)");
+
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -51,7 +53,9 @@ client.on('message', async (msg) => {
     if (!msg) return;
     const message = new Message(client, msg, prefix);
     if (message.isBot) return;
-    if (message.text.startsWith(prefix) && message.text[1] === " ") message.text = message.text.replace(/^(\.)(\s)(.+)/, '$1$3');
+    if (message.text.startsWith(prefix) && message.text[1] === " ") {
+      message.text = message.text.replace(regex, '$1$3');
+    }
     if (message.admin) {
       if (message.text.startsWith(">")) {
         let m = message;
