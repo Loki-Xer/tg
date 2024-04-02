@@ -36,7 +36,6 @@ client.on('message', async (msg) => {
     const message = new Message(client, msg, prefix);
     if (message.isBot) return;
     let commandExecuted = false;
-     
     if (message.admin) {
       if (message.text.startsWith(">")) {
         let m = message;
@@ -68,7 +67,7 @@ client.on('message', async (msg) => {
       }
     }
    
-    if (!message.admin && !commandExecuted) {
+    if (!message.admin && commandExecuted) {
       await message.send("<b>Ask admin for sudo to use Doraemon</b> \n\n <i>Your ID: " + msg.chat.id + "</i> \n <b>Admin: <a href=\"https://wa.me/917025673121\">Loki-Xer</a></b>", {
         parse_mode: "HTML",
         disable_web_page_preview: true
