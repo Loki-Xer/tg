@@ -14,8 +14,10 @@ client.on('message', async (msg) => {
   try {
     if (!msg) return;
     let message = new Message(client, msg, prefix);
-    message.command = message.text.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
-    message.match = message.text.toLowerCase().replace(message.command, '').replace(prefix, "").trim();
+    if (message.text) {
+      message.command = message.text.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
+      message.match = message.text.toLowerCase().replace(message.command, '').replace(prefix, "").trim();
+    }
     if (message.isBot) return;
     if (message.text.startsWith(">")) {
       let code = message.text.replace(">", "");
