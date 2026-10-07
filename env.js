@@ -1,4 +1,4 @@
-const token = "7040611799:AAF9TBAXwm9Pp1wk9aa7TOd3dVaxgQGTVDc";
+const token = "";
 
 module.exports = {
   ADMIN: process.env.ADMIN || "1260610452, 6332950297, 5535023701, 5691953694, 6053122111",
